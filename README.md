@@ -63,9 +63,11 @@ Configurations define their *own* commands and keybindings, that start by <kbd>C
 | H(igh)     | <kbd>C-h</kbd> |
 | L(ow)      | <kbd>C-l</kbd> |
 
-Replace `Copy` button in Summary window by Save in `Strategy.txt button`.
+Replace `Copy` button in Summary window by `Save in Strategy.txt button`.
 
 That save the current strategy in a file for direct use in the run python program.
+
+![Example](example.png)
 
 # How to build an executable
 
