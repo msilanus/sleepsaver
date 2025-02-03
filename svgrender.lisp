@@ -55,11 +55,21 @@
                  :fill-opacity 0.2
                  :stroke-width 5
                  :stroke "lime")))
-    (format t "theta = ~A~%" theta)
-    (format t "x1 = ~A~%" x)
-    (format t "y1 = ~A~%" y)
-    (format t "x2 = ~A~%" (+ x  (* (+ alen (/ width 2)) (cos theta))))
-    (format t "y2 = ~A~%" (+ y  (* (+ alen (/ width 2)) (sin theta))))
+    (cl-svg:transform (cl-svg:rotate (rad->deg theta) x y)
+       (cl-svg:draw canvas
+        	(:rect :x (- (+ x (/ width 2)) 50)
+                 :y (- y (/ 400 2))  ;; Ajustement de la hauteur
+                 :height 400  ;; Hauteur de 400
+                 :width 50  ;; Largeur de 200
+                 :fill "red"
+                 :fill-opacity 0.5
+                 :stroke-width 5
+                 :stroke "red")))
+    ;;(format t "theta = ~A~%" theta)
+    ;;(format t "x1 = ~A~%" x)
+    ;;(format t "y1 = ~A~%" y)
+    ;;(format t "x2 = ~A~%" (+ x  (* (+ alen (/ width 2)) (cos theta))))
+    ;;(format t "y2 = ~A~%" (+ y  (* (+ alen (/ width 2)) (sin theta))))
     (svgrender-arrow
      canvas
      x
