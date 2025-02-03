@@ -386,7 +386,7 @@ SELECTOR, and refresh *STYLE-BLOCK*."
   (loop :while (or (null *map-window*)
 		   (null *summary-window*))
 	:do (sleep 0.1))
-  (switch-config :2025-ceri)
+  (switch-config :2025-ceri) ;;
   (render-moves))
 
 (defun run-sleepsaver-forever ()
