@@ -1,0 +1,16 @@
+#+TITLE: Design Notes for Sleepsaver 2
+#+AUTHOR: Arthur Amalvy
+
+- Equivalence between ~sleepsaver::move~ and ~string~ so that one can
+  be converted to the other easily
+- Keep the concept of estimated time
+- Possibility to hide actions
+- Actual hitbox of the robot
+- keep define-move?
+- each action could be a list of move (easier manipulation?)
+- maps as SVGs
+  - drawing is done directly on this SVG
+- Configs
+  - Embed their move, basis
+  - An easy to use config system, where registering a move allows
+    unregistering it easily!
