@@ -26,20 +26,48 @@
      (cl-svg:draw* (:line :x1 ,x1 :y1 ,y1 :x2 ,x2 :y2 ,y2))
      (let ((v (make-array 2 :initial-contents (list (- ,x2 ,x1) (- ,y2 ,y1)))))
        (when (not (null-vector-p v))
+       (format t "dessine la fleche~%")
 	 (let ((vnorm (mul v (/ 1 (norm v)))))
 	   (cl-svg:draw*
 	       (:polygon
 		:points
-		(format nil
-			"~A,~A ~A,~A ~A,~A"
-			,x2 ,y2
-			(- ,x2 (* ,alen (+ (aref vnorm 0) (/ (aref vnorm 1) 4))))
-			(- ,y2 (* ,alen (- (aref vnorm 1) (/ (aref vnorm 0) 4))))
-			(- ,x2 (* ,alen (- (aref vnorm 0) (/ (aref vnorm 1) 4))))
-			(- ,y2 (* ,alen (+ (aref vnorm 1) (/ (aref vnorm 0) 4))))))))))))
+		(let ((result (format nil
+                      "~A,~A ~A,~A ~A,~A"
+                      (truncate ,x2) (truncate ,y2)
+                      (truncate (- ,x2 (* ,alen (+ (aref vnorm 0) (/ (aref vnorm 1) 4)))))
+                      (truncate (- ,y2 (* ,alen (- (aref vnorm 1) (/ (aref vnorm 0) 4)))))
+                      (truncate (- ,x2 (* ,alen (- (aref vnorm 0) (/ (aref vnorm 1) 4)))))
+                      (truncate (- ,y2 (* ,alen (+ (aref vnorm 1) (/ (aref vnorm 0) 4))))))))
+					  (format t "~A~%" result)
+					  result))))))))
 
 
 (defun svgrender-robot-default (canvas rstate)
+  (let ((width 200)
+	(x (robot-state-x rstate))
+	(y (robot-state-y rstate))
+	(theta (robot-state-theta rstate))
+	(alen 50))
+    (cl-svg:transform (cl-svg:rotate (rad->deg theta) x y)
+      (cl-svg:draw canvas
+	  (:rect :x (-  x (/ width 2))
+		 :y (-  y (/ width 2))
+		 :height 200
+		 :width 200
+		 :fill "lime"
+		 :fill-opacity 0.2
+		 :stroke-width 5
+		 :stroke "lime")))
+    (svgrender-arrow
+     canvas
+     x
+     y
+     (+ x  (* (+ alen (/ width 2)) (cos theta)))
+     (+ y  (* (+ alen (/ width 2)) (sin theta)))
+     alen
+     :fill "lime")))
+     
+(defun svgrender-robot-ceri (canvas rstate)
   (let ((width 200)  ;; Largeur de 200
         (x (robot-state-x rstate))
         (y (robot-state-y rstate))
@@ -65,19 +93,7 @@
                  :fill-opacity 0.5
                  :stroke-width 5
                  :stroke "red")))
-    ;;(format t "theta = ~A~%" theta)
-    ;;(format t "x1 = ~A~%" x)
-    ;;(format t "y1 = ~A~%" y)
-    ;;(format t "x2 = ~A~%" (+ x  (* (+ alen (/ width 2)) (cos theta))))
-    ;;(format t "y2 = ~A~%" (+ y  (* (+ alen (/ width 2)) (sin theta))))
-    (svgrender-arrow
-     canvas
-     x
-     y
-     (+ x  (* (+ alen (/ width 2)) (cos theta)))
-     (+ y  (* (+ alen (/ width 2)) (sin theta)))
-     alen
-     :fill "lime")))
+    ))
 
 
 
@@ -91,7 +107,17 @@
 	  :for i :from 0
 	  :do (progn
 		(funcall draw-robot canvas rstate)
+		;; La flèche seulement sur les translations
+		;; A revoir !!!
 		(when prev-rstate
+		 (when  (equal (robot-state-theta prev-rstate) (robot-state-theta rstate)) 
+		  (format t "New line~%")
+	      (format t "theta1 = ~A~%" (robot-state-theta prev-rstate))
+		  (format t "x1 = ~A~%" (robot-state-x prev-rstate))
+		  (format t "y1 = ~A~%" (robot-state-y prev-rstate))
+		  (format t "theta2 = ~A~%" (robot-state-theta rstate))
+		  (format t "x2 = ~A~%" (robot-state-x rstate))
+		  (format t "y2 = ~A~%" (robot-state-y rstate))
 		  (svgrender-arrow
 		   canvas
 		   (robot-state-x prev-rstate)
@@ -103,5 +129,5 @@
 		   :stroke-width 5
 		   :fill "lime"
 		   :id (move-render-id (- i 1))
-		   :class "move-render"))
+		   :class "move-render")))
 		(setf prev-rstate rstate)))))

@@ -222,7 +222,7 @@ menu items in *CONFIG-DDOWN*."
 (make-config
  :2025-ceri
  (a:assoc-value *maps* :2025)
- #'svgrender-robot-default
+ #'svgrender-robot-ceri
  (flet ((translate-along-axis (rstate offset)
 	  (let* ((x           (robot-state-x rstate))
 		 (y           (robot-state-y rstate))
