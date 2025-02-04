@@ -67,6 +67,8 @@ Replace `Copy` button in Summary window by Save in `Strategy.txt button`.
 
 That save the current strategy in a file for direct use in the run python program.
 
+![image example](example.png)
+
 # How to build an executable
 
 You need the following dependencies:
