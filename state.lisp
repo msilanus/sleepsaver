@@ -197,6 +197,7 @@ than MOVE's position."
 (defun save-state (state path)
   "Save STATE to file at PATH."
   (with-open-file (f path :direction :output :if-exists :supersede)
+  	(format t "~A~%" state)
     (prin1 state f)))
 
 ;;; Reading

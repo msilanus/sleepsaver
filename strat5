@@ -1,0 +1,16 @@
+#S(SLEEPSAVER::STATE
+   :MOVES (#m(SLEEPSAVER::2025-CERI-FORWARD-MOVE :OFFSET 1000)
+           #m(SLEEPSAVER::2025-CERI-ROTATE-MOVE :THETA 45)
+           #m(SLEEPSAVER::2025-CERI-UP-MOVE :OFFSET 200)
+           #m(SLEEPSAVER::2025-CERI-LOW-MOVE :AXIS "A")
+           #m(SLEEPSAVER::2025-CERI-HIGH-MOVE :AXIS "D")
+           #m(SLEEPSAVER::2025-CERI-HIGH-MOVE :AXIS "R")
+           #m(SLEEPSAVER::2025-CERI-HIGH-MOVE :AXIS "L")
+           #m(SLEEPSAVER::2025-CERI-DOWN-MOVE :OFFSET -200))
+   :ACTIONS NIL
+   :INITIAL-ROBOT-STATE #S(SLEEPSAVER::ROBOT-STATE
+                           :X 281.9549
+                           :Y 762.0818
+                           :THETA 0.0
+                           :TIME 0.0)
+   :CONFIG :2025-CERI)

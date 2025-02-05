@@ -230,6 +230,16 @@ SELECTOR, and refresh *STYLE-BLOCK*."
 			   (setf (action-start next-action) move-i)
 			   (render-moves)))))))))))
 
+(defun write-to-file (filename content)
+  "Écrit le contenu de 'content' dans un fichier spécifié par 'filename'.
+   Si 'overwrite-p' est non-nil, le fichier est écrasé. Sinon, on ajoute à la fin."
+  (ensure-directories-exist "~/strategies/")
+  (with-open-file (stream filename 
+                          :direction :output 
+                          :if-exists :supersede
+                          :if-does-not-exist :create)
+    (format stream "~A~%" content)))
+
 ;; TODO
 ;; summary of each move in a dedicated window. For each move, also add
 ;; the estimated match time and robot pose.
@@ -237,6 +247,7 @@ SELECTOR, and refresh *STYLE-BLOCK*."
   (declare (ignore robot-states)) ;; TODO: use robot-states info
   (clog-pdestroy-children (summary-window-body))
   (let* ((body (summary-window-body))
+  	 ;; Modification du comportement du bouton copy d'origine -> Save to strategy.txt
 	 (copy-button (clog:create-button body :content "Save to strategy.txt")))
     (clog:set-on-click copy-button
 		       (lambda (obj)
@@ -338,8 +349,6 @@ SELECTOR, and refresh *STYLE-BLOCK*."
    "."
    (lambda (path)
      (when path
-       ;;(write-to-file "strategy.txt" "Strategy = [" t)
-       ;;(setf *strategy* '())
        (setf *current-state* (load-state path))
        (switch-config (state-config *current-state*))
        (render-moves)))))

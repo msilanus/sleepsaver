@@ -1,0 +1,10 @@
+#S(SLEEPSAVER::STATE
+   :MOVES (#m(SLEEPSAVER::2025-CERI-HIGH-MOVE :AXIS A)
+           #m(SLEEPSAVER::2025-CERI-LOW-MOVE :AXIS A))
+   :ACTIONS NIL
+   :INITIAL-ROBOT-STATE #S(SLEEPSAVER::ROBOT-STATE
+                           :X 533.8346
+                           :Y 1037.1747
+                           :THETA 0.0
+                           :TIME 0.0)
+   :CONFIG :2025-CERI)

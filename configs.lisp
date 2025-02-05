@@ -273,12 +273,12 @@ menu items in *CONFIG-DDOWN*."
       (lambda (move) (move-easy-format move "screw(\"D\", ~a),")))
     ;; H(igh)
     (define-move 2025-ceri-high
-	((axis :initarg :axis :initform 'A :type symbol))
-      (lambda (move) (move-easy-format move "arm(\"H\", \"~a\"),")))
+	((axis :initarg :axis :initform "A" :type string))  ;;modification du type
+      (lambda (move) (move-easy-format move "arm(\"H\", ~a),")))
     ;; L(ow)
     (define-move 2025-ceri-low
-	((axis :initarg :axis :initform 'A :type symbol))
-      (lambda (move) (move-easy-format move "arm(\"L\", \"~a\"),"))))))
+	((axis :initarg :axis :initform "A" :type string))  ;;modification du type
+      (lambda (move) (move-easy-format move "arm(\"L\", ~a),"))))))
 
 (make-config
  :2024

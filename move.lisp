@@ -106,16 +106,7 @@ of MOVE."
 	   (append (list nil format-string)
 		   (mapcar (lambda (slot-name) (slot-value move slot-name)) slot-names)))))"
 		   
-(defun write-to-file (filename content)
-  "Écrit le contenu de 'content' dans un fichier spécifié par 'filename'.
-   Si 'overwrite-p' est non-nil, le fichier est écrasé. Sinon, on ajoute à la fin."
-  (ensure-directories-exist "~/strategies/")
-  (with-open-file (stream filename 
-                          :direction :output 
-                          :if-exists :supersede
-                          :if-does-not-exist :create)
-    (format stream "~A~%" content)))
-		   
+	   
 (defun move-easy-format (move format-string)
   "Format a MOVE according to FORMAT-STRING, by iterating over the slots
 of MOVE, print the formatted result to the console, and return the formatted string."
@@ -138,7 +129,8 @@ directly, see MAKE-MOVE-INPUT-FORM."
 		   (cons (intern (symbol-name slot-name) "KEYWORD")
 			 (cond
 			   ((eq slot-type 'integer) (parse-integer value))
-			   ((eq slot-type 'string) value)
+			   ;; Modification du type string : encadrement de la valeur avec des ""
+			   ((eq slot-type 'string) (concatenate 'string "\"" value "\"")) ;; Modification
 			   ((eq slot-type 'float) (parse-float:parse-float value))
 			   ((eq slot-type 'symbol) (intern (string-upcase value) "SLEEPSAVER"))
 			   (t (error "Unsupported move slot type: ~A" slot-type)))))))
