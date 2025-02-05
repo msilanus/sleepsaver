@@ -239,7 +239,8 @@ menu items in *CONFIG-DDOWN*."
 		  (move-easy-format move command)))  ;; Utilise command dans move-easy-format
 	  :terrain-move
 	  (lambda (move rstate)
-	(translate-along-axis rstate (offset move))))
+	(translate-along-axis rstate (offset move))
+	(robot-state-update-time rstate (/ (* 2.25 (offset move)) 1000))))  ;; 2.25*d/1000
 
     ;; B(ackward)
 	(define-move 2025-ceri-backward
@@ -249,7 +250,8 @@ menu items in *CONFIG-DDOWN*."
 		  (move-easy-format move command)))  ;; Utilise command dans move-easy-format
 	  :terrain-move
 	  (lambda (move rstate)
-		(translate-along-axis rstate (- (offset move)))))
+		(translate-along-axis rstate (- (offset move)))
+		(robot-state-update-time rstate (/ (* 2.25 (offset move)) 1000))))
 		
 	;; R(otate)
     (define-move 2025-ceri-rotate
@@ -261,24 +263,38 @@ menu items in *CONFIG-DDOWN*."
 	(let* ((theta-rad (* (theta move) (/ pi 180)))
            (theta-old (robot-state-theta rstate)))  ; Récupère l'ancienne valeur de theta
       (setf (robot-state-theta rstate) (+ theta-rad theta-old))  ; Mise à jour de theta
-      rstate)))  ; Retourne l'état du robot
+      (robot-state-update-time rstate (/ (* 2.25 (* (abs theta-rad) 100)) 1000)))))  ; Retourne l'état du robot
     
     ;; U(p)
     (define-move 2025-ceri-up
 	((offset :initarg :offset :initform 0 :type integer))
-      (lambda (move) (move-easy-format move "screw(\"U\", ~a),")))
+      (lambda (move) (move-easy-format move "screw(\"U\", ~a),"))
+      :terrain-move
+      (lambda (move rstate) (robot-state-update-time rstate 0.0))
+    )
     ;; D(own)
     (define-move 2025-ceri-down
 	((offset :initarg :offset :initform 0 :type integer))
-      (lambda (move) (move-easy-format move "screw(\"D\", ~a),")))
+      (lambda (move) (move-easy-format move "screw(\"D\", ~a),"))
+      :terrain-move
+      (lambda (move rstate) (robot-state-update-time rstate 0.0))
+    )
     ;; H(igh)
     (define-move 2025-ceri-high
 	((axis :initarg :axis :initform "A" :type string))  ;;modification du type
-      (lambda (move) (move-easy-format move "arm(\"H\", ~a),")))
+      (lambda (move) (move-easy-format move "arm(\"H\", ~a),"))
+      :terrain-move
+      (lambda (move rstate) (robot-state-update-time rstate 0.5))
+    )
     ;; L(ow)
     (define-move 2025-ceri-low
 	((axis :initarg :axis :initform "A" :type string))  ;;modification du type
-      (lambda (move) (move-easy-format move "arm(\"L\", ~a),"))))))
+      (lambda (move) (move-easy-format move "arm(\"L\", ~a),"))
+      :terrain-move
+      (lambda (move rstate) (robot-state-update-time rstate 0.5))
+    )
+      
+)))
 
 (make-config
  :2024

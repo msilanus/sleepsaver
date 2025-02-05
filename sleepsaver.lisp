@@ -265,11 +265,12 @@ SELECTOR, and refresh *STYLE-BLOCK*."
 			 (princ "Strategy saved in ")
 			 ))
     (loop :for move :in moves
+      :for rstate :in (cdr robot-states) ;; itérer sur tous les rstate sauf le premier
 	  :do (let* ((action (get-move-action move))
 		     (style (if action
 				(format nil "margin: 3px; color: ~A;" (action-color action))
 				"margin: 3px;"))
-		     (p (clog:create-p body :content (move-format move)
+		     (p (clog:create-p body :content (format nil "~A # ~,2F" (move-format move) (robot-state-time rstate))
 					    :class "move-summary-entry"
 					    :style style))
 		     (inner-move move))
@@ -310,6 +311,8 @@ SELECTOR, and refresh *STYLE-BLOCK*."
   (let* ((initial-rstate (state-initial-robot-state *current-state*))
 	 (moves (state-moves *current-state*))
 	 (robot-states (compute-robot-states initial-rstate moves)))
+	 (loop for state in robot-states
+	   do (format t "~A~%" (robot-state-time state)))
     (render-summary moves robot-states)
     (render-robot-states moves robot-states)))
 
