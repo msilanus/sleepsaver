@@ -26,7 +26,7 @@
      (cl-svg:draw* (:line :x1 ,x1 :y1 ,y1 :x2 ,x2 :y2 ,y2))
      (let ((v (make-array 2 :initial-contents (list (- ,x2 ,x1) (- ,y2 ,y1)))))
        (when (not (null-vector-p v))
-       (format t "dessine la fleche~%")
+       ;; (format t "dessine la fleche~%")
 	 (let ((vnorm (mul v (/ 1 (norm v)))))
 	   (cl-svg:draw*
 	       (:polygon
@@ -38,7 +38,7 @@
                       (truncate (- ,y2 (* ,alen (- (aref vnorm 1) (/ (aref vnorm 0) 4)))))
                       (truncate (- ,x2 (* ,alen (- (aref vnorm 0) (/ (aref vnorm 1) 4)))))
                       (truncate (- ,y2 (* ,alen (+ (aref vnorm 1) (/ (aref vnorm 0) 4))))))))
-					  (format t "~A~%" result)
+					  ;; (format t "~A~%" result) ;; affichage coordonnees de la fleche
 					  result))))))))
 
 
@@ -111,13 +111,13 @@
 		;; A revoir !!!
 		(when prev-rstate
 		 (when  (equal (robot-state-theta prev-rstate) (robot-state-theta rstate)) 
-		  (format t "New line~%")
-	      (format t "theta1 = ~A~%" (robot-state-theta prev-rstate))
-		  (format t "x1 = ~A~%" (robot-state-x prev-rstate))
-		  (format t "y1 = ~A~%" (robot-state-y prev-rstate))
-		  (format t "theta2 = ~A~%" (robot-state-theta rstate))
-		  (format t "x2 = ~A~%" (robot-state-x rstate))
-		  (format t "y2 = ~A~%" (robot-state-y rstate))
+		  ;;(format t "New line~%")
+	      ;;(format t "theta1 = ~A~%" (robot-state-theta prev-rstate))
+		  ;;(format t "x1 = ~A~%" (robot-state-x prev-rstate))
+		  ;;(format t "y1 = ~A~%" (robot-state-y prev-rstate))
+		  ;;(format t "theta2 = ~A~%" (robot-state-theta rstate))
+		  ;;(format t "x2 = ~A~%" (robot-state-x rstate))
+		  ;;(format t "y2 = ~A~%" (robot-state-y rstate))
 		  (svgrender-arrow
 		   canvas
 		   (robot-state-x prev-rstate)

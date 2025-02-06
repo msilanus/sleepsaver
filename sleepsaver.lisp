@@ -144,7 +144,9 @@ SELECTOR, and refresh *STYLE-BLOCK*."
 					:y mousey
 					:theta (atan (- mousey (robot-state-y robot-state))
 						     (- mousex (robot-state-x robot-state)))
-					:time (robot-state-time robot-state)))
+					:time (robot-state-time robot-state)
+					:score (robot-state-score robot-state)
+					))
 				      (svgrender-arrow
 				       canvas
 				       startx starty
@@ -270,7 +272,7 @@ SELECTOR, and refresh *STYLE-BLOCK*."
 		     (style (if action
 				(format nil "margin: 3px; color: ~A;" (action-color action))
 				"margin: 3px;"))
-		     (p (clog:create-p body :content (format nil "~A # ~,2F" (move-format move) (robot-state-time rstate))
+		     (p (clog:create-p body :content (format nil "~A # ~,2F, score = ~A" (move-format move) (robot-state-time rstate) (robot-state-score rstate))
 					    :class "move-summary-entry"
 					    :style style))
 		     (inner-move move))
@@ -311,8 +313,8 @@ SELECTOR, and refresh *STYLE-BLOCK*."
   (let* ((initial-rstate (state-initial-robot-state *current-state*))
 	 (moves (state-moves *current-state*))
 	 (robot-states (compute-robot-states initial-rstate moves)))
-	 (loop for state in robot-states
-	   do (format t "~A~%" (robot-state-time state)))
+	 ;;(loop for state in robot-states
+	 ;;  do (format t "~A~%" (robot-state-time state)))
     (render-summary moves robot-states)
     (render-robot-states moves robot-states)))
 

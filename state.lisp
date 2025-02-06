@@ -4,11 +4,17 @@
   (x 0.0 :type float)
   (y 0.0 :type float)
   (theta 0.0 :type float)
-  (time 0.0 :type float))
+  (time 0.0 :type float)
+  (score 0 :type integer))
 
 (defun robot-state-update-time (rstate move-duration)
   "update RSTATE by adding MOVE-DURATION to its current time."
   (setf (robot-state-time rstate) (+ (robot-state-time rstate) move-duration))
+  rstate)
+
+(defun robot-state-update-score (rstate move-score)
+  "update RSTATE by adding MOVE-score to its current score."
+  (setf (robot-state-score rstate) (+ (robot-state-score rstate) move-score))
   rstate)
 
 (defun make-robot-state-input-form (obj on-input &optional robot-state)
@@ -17,14 +23,17 @@ will use it for default values."
   (let ((x (if robot-state (format nil "~A" (robot-state-x robot-state)) "0.0"))
 	(y (if robot-state (format nil "~A" (robot-state-y robot-state)) "0.0"))
 	(theta (if robot-state (format nil "~A" (robot-state-theta robot-state)) "0.0"))
-	(time (if robot-state (format nil "~A" (robot-state-time robot-state)) "0.0")))
+	(time (if robot-state (format nil "~A" (robot-state-time robot-state)) "0.0"))
+	(score (if robot-state (format nil "~A" (robot-state-score robot-state)) "0"))
+       )
     (clog-gui:form-dialog
      obj
      "Input robot-state"
      (list (list "x" "x" :text x)
 	   (list "y" "y" :text y)
 	   (list "theta" "theta" :text theta)
-	   (list "time" "time" :text time))
+	   (list "time" "time" :text time)
+	   (list "score" "score" :text score ))
      (lambda (result)
        (when result
 	 (funcall
@@ -33,7 +42,9 @@ will use it for default values."
 	   :x (clog-form-dialog-get-float result "x")
 	   :y (clog-form-dialog-get-float result "y")
 	   :theta (clog-form-dialog-get-float result "theta") 
-	   :time (clog-form-dialog-get-float result "time"))))))))
+	   :time (clog-form-dialog-get-float result "time")
+	   :score (clog-form-dialog-get-interger result "score")
+	   )))))))
 
 (defstruct action
   (start 0 :type integer)
@@ -197,7 +208,7 @@ than MOVE's position."
 (defun save-state (state path)
   "Save STATE to file at PATH."
   (with-open-file (f path :direction :output :if-exists :supersede)
-  	(format t "~A~%" state)
+  	;; (format t "~A~%" state)
     (prin1 state f)))
 
 ;;; Reading
